@@ -1,0 +1,20 @@
+{
+  "name": "uploading-images-s3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  },
+  "keywords": [],
+  "author": "Ibrahim Zahra",
+  "license": "ISC"
+}
