@@ -24,7 +24,7 @@ const imageUploader = async (req, res) => {
             resizeAndUpload(file, 300, 300, user_id)
         ]);
 
-
+    //remove oroginal image
     await unlinkFile(file.path)
     res.send([
         {"small_image_path": small_image_path.Key},
@@ -39,6 +39,7 @@ const imageUploader = async (req, res) => {
  * @returns {Promise<void>}
  */
 const imageDownloader = async (req, res) => {
+    //TODO check if user want to fetch his image.
     const key = req.params.key
     const readStream = getFileStream(key)
     readStream.pipe(res)
