@@ -5,6 +5,7 @@
 This project receives an image through HTTP protocol,
 the image is converted into the specified resolutions and then uploaded to AWS S3 bucket.
 and In response returns an image url.
+
 Specified resolutions are: (large - 2048x2048, medium - 1024x1024, thumb - 300x300).
 -------------------------
 ## TECHNOLOGIES
