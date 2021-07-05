@@ -54,7 +54,7 @@ As a result each image give one image path, and user will get pathes for three r
 In order to be able to get back to the image ,the image pathes are inserted into mysql DB , so user images can be fetched if the images are not public
 
 ### Serverless Approch:
-For image processing part ; serverless approch was  used. 
+For image processing part ; serverless approch cab be used. 
 So when any image is uploaded to application , lambda function starts execution 
 and resizes the image,then inserts it into the DB.
 This approch is normally used in cases where :The user doesn't want the uploaded image path,or when the whole application is running on serverless.
