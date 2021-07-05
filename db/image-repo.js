@@ -13,4 +13,11 @@ async function insertUserImage(user_id, image_path) {
 
     })
 }
-module.exports={insertUserImage}
+async function getImageByUserId(user_id, image_path) {
+    connection.query(`Select * from  ${imagePathTable} where user_id=? and image_path=?`, [user_id, image_path], function (err, result) {
+        if (err) throw err;
+        console.log("1 image path was inserted");
+
+    })
+}
+module.exports={insertUserImage,getImageByUserId}

@@ -2,6 +2,8 @@ const {getFileStream, resizeAndUpload} = require('../s3/s3.utils')
 const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
+const {getImageByUserId} = require('../db/image-repo')
+
 /**
  * Resize images for specified resolution before upload
  * insert image paths in rds table and assign it to the right user
@@ -12,7 +14,7 @@ const unlinkFile = util.promisify(fs.unlink)
 const imageUploader = async (req, res) => {
     let user_id = req.user.id
     const file = req.file
-    if( typeof file === 'undefined' || file === null){
+    if (typeof file === 'undefined' || file === null) {
         res.sendStatus(400)
         return
     }
@@ -39,8 +41,15 @@ const imageUploader = async (req, res) => {
  * @returns {Promise<void>}
  */
 const imageDownloader = async (req, res) => {
-    //TODO check if user want to fetch his image.
+    let user_id = req.user.id;
     const key = req.params.key
+    await getImageByUserId(user_id, key, async function (result) {
+        if (result.length == 0) {
+            res.status(401).send("this user is not authorized to get this image")
+            return;
+        }
+    })
+
     const readStream = getFileStream(key)
     readStream.pipe(res)
 }
