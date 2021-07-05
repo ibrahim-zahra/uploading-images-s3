@@ -1,48 +1,73 @@
-INTRODUCTION
-------------
+# Picasso Back-End New Platform
 
 
-This project uploades images on s3 bucket and insert uploaded images into rds mysql DB
 
+This project receives an image through HTTP protocol,
+the image is converted into the specified resolutions and then uploaded to AWS S3 bucket.
+and In response returns an image url.
+Specified resolutions are: (large - 2048x2048, medium - 1024x1024, thumb - 300x300).
+-------------------------
+## TECHNOLOGIES
+-------------------------
+- [node.js] - evented I/O for the backend
+- [Express] - fast node.js network app framework 
+- [Multer](https://www.npmjs.com/package/multer) - for Uploading Images
+- [AWS SDK ](https://aws.amazon.com/sdk-for-javascript/)  - for AWS S3 Bucket 
+- [Json Web token(JWT)](https://jwt.io/) - for authentication
 
 -------------------------
-HOW THE SOLUTION WORKS?
+## PROJECT SPECIFICATIONS
 -------------------------
-The application exposes some rest API's , one to upload an image and another to get.
--When an image is uploaded, It's resized into 3 specified resoultuions (300*300,1024*1024,2048*2048) then they get uploaded to s3 bucket.
--Uploading 3 images is done in parallel for performance issue.
--After that the image path is inserted into MysqlDB assigned with user id .
--Before uploading an image, you sign in(Sign up first) and get JWT token to authenticated.
--There is an roles.js file if in the fuutre we want to support autherities.
-
+- The application exposes Two differnt kinds of rest APIs , one to upload an image and the other is to get the image .
+- When an image is uploaded, It's resized into three specified resoultuions (large - 2048x2048, medium - 1024x1024, thumb - 300x300) then they get uploaded to S3 bucket.
+- Parallel uploading for the images 
+- The image path is inserted into MysqlDB assigned with user id.
+-  authentication is made via JWT Tokens (You need to sign in/Sign up first and get the token which expired every 15 mins )
+-  roles.js file is provided for future use (in case autherities support was needed).
 
 -------------------------
-DESIGN DECISIONS & ISSUES
+## DESIGN DECISIONS & ISSUES
 -------------------------
+### Architecture : 
+#### _(Layered Architecture Pattern)_.
+For Architecture  (_Layered Architecture Pattern_ ) was used where each layer has a specific
+role and responsibility within the application.
+This back-end platform Consist of three Layers : 
+- Entry point (Route Layer)
+- logic Layer(controller)
+- Data Access Layer (Database Layer)
 
-Design decisions were revolving around the two mile stones : Memory & Performance 
-
-Authintication : 
-For this stage , roles are not needed, but the user should be authinticated by registering into the application.JWT was choosen as authintication approch as it
- URL-safe of representing claims to be transferred between two parties,the token expires every 15 min, and user id is encoded inside the token.
+### Authintication : 
+#### _(JSON Web Token (JWT))_.
+For this stage , roles are not needed, but the user should be authinticated by registering into the application.
+JWT was choosen as authintication approch as it is _URL-safe_ of representing claims to be transferred between two parties.
+The token expires every 15 min, and user id is _encoded_ inside the token.
  
 
-Performance :
-To improve performance and have less execution time paralle uploading approach
-was used, in this approach the code each image is processed seperatly,resized and uploaded.
-As a result each image give one image path, and user will get pathes for 3 resoulutions
--Data consinstency:
+### Performance :
+To improve performance and have less execution time parallel uploading approach
+was used. In this approach in the code each image is processed seperatly,resized and uploaded.
+As a result each image give one image path, and user will get pathes for three resoulutions
+
+### Data Consinstency:
 In order to be able to get back to the image ,the image pathes are inserted into mysql DB , so user images can be fetched if the images are not public
 
--Serverless approch:
- -For image processing part serverless approch can be used. So when any image is uploaded to our application , lambda function will start execution and resize the image
- then insert it into the DB.This approch can be choosed when the user doesn't want the uploaded image path,or whole application is running on serverless.
+### Serverless Approch:
+For image processing part ; serverless approch was  used. 
+So when any image is uploaded to application , lambda function starts execution 
+and resizes the image,then inserts it into the DB.
+This approch is normally used in cases where :The user doesn't want the uploaded image path,or when the whole application is running on serverless.
 
 -------------------------
-HOW TO RUN THE PROJECT/CODE?
+## HOW TO RUN THE PROJECT/CODE?
 -------------------------
--Edit .env file with your credintials for AWS s3 and mysql DB
+- Edit  [.env](https://github.com/ibrahim-zahra/uploading-images-s3/blob/master/.env)   file with Your credintials for AWS S3 and mysql DB.
+- You can download the code and run express server or just build and run [docker file](https://github.com/ibrahim-zahra/uploading-images-s3/blob/master/Dockerfile)
 
--You can download the code and run express server or just build and run docker file
+    ```  
+    npm start       // for running express server
+    docker build    //to build and run docker file 
+    ```
 
----------------------------
+
+
