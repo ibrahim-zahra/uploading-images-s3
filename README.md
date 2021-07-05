@@ -43,4 +43,5 @@ HOW TO RUN THE PROJECT/CODE?
 -------------------------
 -Edit .env file with your credintials for AWS s3 and mysql DB
 -You can download the code and run express server or just build and run docker file
+
 ---------------------------
