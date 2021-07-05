@@ -2,7 +2,7 @@ INTRODUCTION
 ------------
 
 
-This project uploades images of an s3 bucket and insert uploaded images into rds mysql DB
+This project uploades images on s3 bucket and insert uploaded images into rds mysql DB
 
 
 -------------------------
@@ -42,6 +42,7 @@ In order to be able to get back to the image ,the image pathes are inserted into
 HOW TO RUN THE PROJECT/CODE?
 -------------------------
 -Edit .env file with your credintials for AWS s3 and mysql DB
+
 -You can download the code and run express server or just build and run docker file
 
 ---------------------------
